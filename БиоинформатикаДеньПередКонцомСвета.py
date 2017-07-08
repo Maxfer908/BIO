@@ -1,7 +1,9 @@
 from pprint import pprint
 import math
+import matplotlib.pyplot as plt
 results=[]
 people=[]
+f_plot=[]
 q=[0,0]
 first=True
 with open('norm_camp.tsv') as f:
@@ -25,7 +27,7 @@ with open('norm_camp.tsv') as f:
         else:
             con=0
             case=0
-            for i in range(0,len(info)-1):
+            for i in range(0,len(info)):
                 if i==0:
                     i+=1
                 elif people[i]==1:
@@ -34,10 +36,10 @@ with open('norm_camp.tsv') as f:
                 elif people[i]==2:
                     case+=float(info[i])
                     i+=1
-            results.append([info[0],float(con/q[0]),float(case/q[1])])
+            results.append([info[0],float(con/q[0]),float(case/q[1]),float((con+case)/(q[0]+q[1]))])
 pprint(results)
 with open('aut.txt','w') as out:
     for i in range(0,len(results)):
-         log=math.log2(results[i][2]/results[i][1])
-         if log>=0.1 or log<=-0.1:
-             print(results[i][0],log,file=out,sep='\t')
+        log=math.log2(results[i][2]/results[i][1])
+        plt.plot(results[i][3],log,'ro')
+plt.show()
